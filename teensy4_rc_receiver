@@ -1,0 +1,57 @@
+
+// Teensy 4.0 with Radio Control receiver
+// Copyright (C) 2020 https://www.roboticboat.uk
+// 5444ea95-0a0e-461f-a258-8fa97c33feff
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// These Terms shall be governed and construed in accordance with the laws of 
+// England and Wales, without regard to its conflict of law provisions.
+
+
+int ch1;
+int ch2;
+int ch3;
+
+void setup() 
+{
+  // Keep the User informed
+  Serial.begin(9600);
+
+  // Setup radio control input pins
+  pinMode(2, INPUT); 
+  pinMode(3, INPUT);
+  pinMode(4, INPUT);
+}
+
+void loop() 
+{
+  // Read the pulse width of each channel
+  ch1 = pulseIn(2, HIGH, 20000);
+  ch2 = pulseIn(3, HIGH, 20000);
+  ch3 = pulseIn(4, HIGH, 20000);
+
+  // Map the value to the range 0 to 180 which is what radio control servos like
+  ch1 = map(ch1,1000,2000,0,180);
+  ch2 = map(ch2,1000,2000,0,180);
+  ch3 = map(ch3,1000,2000,0,180);
+
+  // Print data to Serial Monitor window
+  Serial.print("$RC,");
+  Serial.print(ch1);
+  Serial.print(",");
+  Serial.print(ch2);  
+  Serial.print(",");
+  Serial.println(ch3);  
+  
+}
